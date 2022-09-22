@@ -5,8 +5,13 @@ using UnityEngine;
 public class ObjectPooler : MonoBehaviour
 {
     public static ObjectPooler SharedInstance;
-    public List<GameObject> pooledObjects;
-    public GameObject objectToPool;
+
+    public List<GameObject> pooledGroundTiles;
+    public List<GameObject> pooledMovableGroundTiles;
+
+    public GameObject[] groundTileToPool;
+    public GameObject[] movableGroundTileToPool;
+
     public int amountToPool;
 
     void Awake()
@@ -14,33 +19,56 @@ public class ObjectPooler : MonoBehaviour
         SharedInstance = this;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        // Loop through list of pooled objects,deactivating them and adding them to the list 
-        pooledObjects = new List<GameObject>();
+        // Loop through list of pooled objects, deactivating them and adding them to the list 
+        pooledGroundTiles = new List<GameObject>();
         for (int i = 0; i < amountToPool; i++)
         {
-            GameObject obj = (GameObject)Instantiate(objectToPool);
+            GameObject obj = (GameObject)Instantiate(groundTileToPool[i % groundTileToPool.Length]);
             obj.SetActive(false);
-            pooledObjects.Add(obj);
+            pooledGroundTiles.Add(obj);
             obj.transform.SetParent(this.transform); // set as children of Spawn Manager
+        }
+
+        pooledMovableGroundTiles = new List<GameObject>();
+        for (int i = 0; i < amountToPool; i++)
+        {
+            GameObject obj = (GameObject)Instantiate(movableGroundTileToPool[i % movableGroundTileToPool.Length]);
+            obj.SetActive(false);
+            pooledMovableGroundTiles.Add(obj);
+            obj.transform.SetParent(this.transform); 
         }
     }
 
-    public GameObject GetPooledObject()
+    public GameObject GetPooledGroundTile()
     {
         // For as many objects as are in the pooledObjects list
-        for (int i = 0; i < pooledObjects.Count; i++)
+        for (int i = 0; i < pooledGroundTiles.Count; i++)
         {
             // if the pooled objects is NOT active, return that object 
-            if (!pooledObjects[i].activeInHierarchy)
+            if (!pooledGroundTiles[i].activeInHierarchy)
             {
-                return pooledObjects[i];
+                return pooledGroundTiles[i];
             }
         }
         // otherwise, return null   
         return null;
     }
 
+
+    public GameObject GetPooledMovableGroundTile()
+    {
+        // For as many objects as are in the pooledObjects list
+        for (int i = 0; i < pooledMovableGroundTiles.Count; i++)
+        {
+            // if the pooled objects is NOT active, return that object 
+            if (!pooledMovableGroundTiles[i].activeInHierarchy)
+            {
+                return pooledMovableGroundTiles[i];
+            }
+        }
+        // otherwise, return null   
+        return null;
+    }
 }

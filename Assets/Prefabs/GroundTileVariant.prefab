@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8811134124050800419}
   - component: {fileID: 7714674590009509240}
   m_Layer: 0
-  m_Name: GroundTile
+  m_Name: GroundTileVariant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5445a82a3a76ea44885216729037945b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

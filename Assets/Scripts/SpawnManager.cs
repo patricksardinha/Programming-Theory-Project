@@ -10,13 +10,16 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] decorsPrefabs;
 
     [SerializeField] private Vector3 posSpawnGroundTile;
+    [SerializeField] private Vector3 posSpawnMovableGroundTile;
+
     [SerializeField] private float gapOffset;
 
-    public GameObject groundTileInstance;
-        
+    // Set the movable ground tile in the right or left side
+    private List<Vector3> listParity = new List<Vector3>() { new Vector3(1,1,1), new Vector3(-1,1,1) };
+
     void Start()
     {
-        StartCoroutine("RoutineSpawnGroundTiles");
+        StartCoroutine("RoutineSpawnRunningPath");
     }
 
     // Update is called once per frame
@@ -26,10 +29,13 @@ public class SpawnManager : MonoBehaviour
     }
 
     // Routine which manage ground tiles spawn 
-    IEnumerator RoutineSpawnGroundTiles()
+    IEnumerator RoutineSpawnRunningPath()
     {
-        // Get ground tile gameobject
+        // Generate ground tile gameobject
         GameObject groundTile = SpawnRandomGroundTile();
+
+        // Generate movable ground tile gameobject
+        GameObject movableGroundTile = SpawnRandomMovableGroundTile(listParity[Random.Range(0, listParity.Count)]);
 
         // Get the position
         Vector3 positionGroundTile = groundTile.transform.position;
@@ -46,23 +52,34 @@ public class SpawnManager : MonoBehaviour
             sizeGroundTile = groundTile.GetComponent<BoxCollider>().size.z * groundTile.transform.localScale.z;
 
             // Check if new ground tile should be spawn
-            // If true call SpawnRandomDecor()
+            // If true call SpawnRandomGroundTile()
             Debug.Log(sizeGroundTile);
             if (positionGroundTile.z < posSpawnGroundTile.z - (sizeGroundTile + gapOffset))
             {
                 groundTile = SpawnRandomGroundTile();
+                movableGroundTile = SpawnRandomMovableGroundTile(listParity[Random.Range(0, listParity.Count)]);
             }
         }
     }
 
-    // Select a random decor in the list of the prefabs decors & return the object
+    // Select a random ground tile in the list of the prefabs & return the object
     public GameObject SpawnRandomGroundTile()
     {
-        int randomGroundTile = Random.Range(0, groundTilePrefabs.Length);
+        GameObject pooledGroundTile = ObjectPooler.SharedInstance.GetPooledGroundTile();
 
-        // The parity indicates if the decor which should spawn will be in the right or left side
-        groundTileInstance = Instantiate(groundTilePrefabs[randomGroundTile], posSpawnGroundTile, groundTilePrefabs[randomGroundTile].gameObject.transform.rotation);
+        pooledGroundTile.SetActive(true);
+        pooledGroundTile.transform.position = posSpawnGroundTile;
 
-        return groundTileInstance;
+        return pooledGroundTile;
+    }
+
+    public GameObject SpawnRandomMovableGroundTile(Vector3 parity)
+    {
+        GameObject pooledMovableGroundTile = ObjectPooler.SharedInstance.GetPooledMovableGroundTile();
+
+        pooledMovableGroundTile.SetActive(true);
+        pooledMovableGroundTile.transform.position = Vector3.Scale(posSpawnMovableGroundTile, parity);
+
+        return pooledMovableGroundTile;
     }
 }
