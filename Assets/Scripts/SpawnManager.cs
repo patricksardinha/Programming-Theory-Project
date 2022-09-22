@@ -17,8 +17,12 @@ public class SpawnManager : MonoBehaviour
     // Set the movable ground tile in the right or left side
     private List<Vector3> listParity = new List<Vector3>() { new Vector3(1,1,1), new Vector3(-1,1,1) };
 
+    private GameManager gameManager;
+
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         StartCoroutine("RoutineSpawnRunningPath");
     }
 
@@ -42,18 +46,15 @@ public class SpawnManager : MonoBehaviour
 
         // Get the size to know when the new spawn should be done
         float sizeGroundTile = groundTile.GetComponent<BoxCollider>().size.z * groundTile.transform.localScale.z;
-
-        while (true)
+        while (gameManager.isGameActive)
         {
             yield return new WaitForSeconds(0);
-
             // Compute the actual position & size of the tile
             positionGroundTile = groundTile.transform.position;
             sizeGroundTile = groundTile.GetComponent<BoxCollider>().size.z * groundTile.transform.localScale.z;
 
             // Check if new ground tile should be spawn
             // If true call SpawnRandomGroundTile()
-            Debug.Log(sizeGroundTile);
             if (positionGroundTile.z < posSpawnGroundTile.z - (sizeGroundTile + gapOffset))
             {
                 groundTile = SpawnRandomGroundTile();

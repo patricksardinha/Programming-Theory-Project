@@ -4,14 +4,22 @@ using UnityEngine;
 
 public class DetectCollisions : MonoBehaviour
 {
+    public GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        // Instead of destroying the projectile when it collides with an animal
-        //Destroy(other.gameObject); 
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Destroy(other.gameObject);
 
-        // Just deactivate the food and destroy the animal
-        other.gameObject.SetActive(false);
-        Destroy(gameObject);
+            // Set the game as Over
+            gameManager.GameOver();
+        }
     }
 
 }

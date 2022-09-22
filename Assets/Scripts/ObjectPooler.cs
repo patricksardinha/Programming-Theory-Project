@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ObjectPooler : MonoBehaviour
 {
@@ -43,32 +44,50 @@ public class ObjectPooler : MonoBehaviour
 
     public GameObject GetPooledGroundTile()
     {
-        // For as many objects as are in the pooledObjects list
-        for (int i = 0; i < pooledGroundTiles.Count; i++)
+        int randomTile = Random.Range(0, pooledGroundTiles.Count);
+
+        if (!pooledGroundTiles[randomTile].activeInHierarchy)
         {
-            // if the pooled objects is NOT active, return that object 
-            if (!pooledGroundTiles[i].activeInHierarchy)
-            {
-                return pooledGroundTiles[i];
-            }
+            return pooledGroundTiles[randomTile];
         }
-        // otherwise, return null   
-        return null;
+        else
+        {
+            // For as many objects as are in the pooledObjects list
+            for (int i = 0; i < pooledGroundTiles.Count; i++)
+            {
+                // if the pooled objects is NOT active, return that object 
+                if (!pooledGroundTiles[i].activeInHierarchy)
+                {
+                    return pooledGroundTiles[i];
+                }
+            }
+            // otherwise, return null   
+            return null;
+        }
     }
 
 
     public GameObject GetPooledMovableGroundTile()
     {
-        // For as many objects as are in the pooledObjects list
-        for (int i = 0; i < pooledMovableGroundTiles.Count; i++)
+        int randomMovableTile = Random.Range(0, pooledMovableGroundTiles.Count);
+
+        if (!pooledMovableGroundTiles[randomMovableTile].activeInHierarchy)
         {
-            // if the pooled objects is NOT active, return that object 
-            if (!pooledMovableGroundTiles[i].activeInHierarchy)
-            {
-                return pooledMovableGroundTiles[i];
-            }
+            return pooledMovableGroundTiles[randomMovableTile];
         }
-        // otherwise, return null   
-        return null;
+        else
+        {
+            // For as many objects as are in the pooledObjects list
+            for (int i = 0; i < pooledMovableGroundTiles.Count; i++)
+            {
+                // if the pooled objects is NOT active, return that object 
+                if (!pooledMovableGroundTiles[i].activeInHierarchy)
+                {
+                    return pooledMovableGroundTiles[i];
+                }
+            }
+            // otherwise, return null   
+            return null;
+        }
     }
 }
