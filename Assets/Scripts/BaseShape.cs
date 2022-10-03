@@ -6,6 +6,7 @@ using TMPro;
 public class BaseShape : MonoBehaviour
 {
     protected TextMeshProUGUI shapeText;
+    public static List<string> shapeList = new List<string>() { "Gr", "Bl", "Ye", "Wh", "Re", "Pi", "Or", "Pu", "Cy"};
 
     private void Start()
     {

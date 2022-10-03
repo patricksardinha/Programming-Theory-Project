@@ -132,4 +132,20 @@ public class SpawnManager : MonoBehaviour
         }
 
     }
+
+    public List<string> SpawnRandomSchemaInGame()
+    {
+        // Schema in game
+        List<string> schemaList = new List<string>();
+
+        // todo: change hard coded 3 value
+        for (int i = 0; i < 3; i++)
+        {
+            int rndShapeInd = Random.Range(0, BaseShape.shapeList.Count);
+            schemaList.Add(BaseShape.shapeList[rndShapeInd]);
+            Debug.Log("->" + schemaList[i]);
+        }
+
+        return schemaList;
+    }
 }
