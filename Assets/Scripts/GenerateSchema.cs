@@ -20,7 +20,7 @@ public class GenerateSchema : MonoBehaviour
 
     private SpawnManager spawnManager;
 
-    private List<string> newSchemaList;
+    public List<string> newSchemaList { get; private set; }
 
     void Start()
     {

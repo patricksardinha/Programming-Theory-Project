@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[DefaultExecutionOrder(-1)]
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private Vector3 posSpawnGroundTile;
@@ -141,8 +143,8 @@ public class SpawnManager : MonoBehaviour
         // todo: change hard coded 3 value
         for (int i = 0; i < 3; i++)
         {
-            int rndShapeInd = Random.Range(0, BaseShape.shapeList.Count);
-            schemaList.Add(BaseShape.shapeList[rndShapeInd]);
+            int rndShapeInd = Random.Range(0, BaseShape.bf_shapeList.Count);
+            schemaList.Add(BaseShape.bf_shapeList[rndShapeInd]);
             Debug.Log("->" + schemaList[i]);
         }
 
