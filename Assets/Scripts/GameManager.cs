@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
 
     public bool isGameActive;
 
+    public GameObject redScreen;
+    public GameObject greenScreen;
+
     private void Start()
     {
         StartGame();

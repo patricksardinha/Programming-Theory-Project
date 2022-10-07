@@ -5,12 +5,12 @@ using TMPro;
 
 public class BaseShape : MonoBehaviour
 {
+    private GameManager gameManager;
+
     protected TextMeshProUGUI shapeText;
     protected Transform canvasBuildedSchema;
 
     private GameObject panelSchema;
-    private GameObject panelGreen;
-    private GameObject panelRed;
 
     public int schemaPositionToFill;
 
@@ -32,8 +32,11 @@ public class BaseShape : MonoBehaviour
     public List<float> position6Shapes { get; private set; }
     public List<float> position7Shapes { get; private set; }
 
+    
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         position3Shapes = new List<float>() { -1, 0, 1 };
         position4Shapes = new List<float>() { -1.5f, -0.5f, 0.5f, 1.5f };
         position5Shapes = new List<float>() { -2, -1, 0, 1, 2 };
@@ -43,12 +46,8 @@ public class BaseShape : MonoBehaviour
         schemaPositionToFill = 0;
 
         panelSchema = GameObject.Find("PanelSchema");
-        panelGreen = GameObject.Find("GreenScreen");
-        panelRed = GameObject.Find("RedScreen");
 
-
-        Debug.Log("---------->" + panelGreen);
-
+        
         shapeText = GameObject.Find("ShapeText").GetComponent<TextMeshProUGUI>();
         canvasBuildedSchema = transform.parent.transform.Find("PanelSchema");
         Debug.Log("la: "+ canvasBuildedSchema);
@@ -73,9 +72,13 @@ public class BaseShape : MonoBehaviour
                     if (currentSchemaList[i] != generateSchema.GetComponent<GenerateSchema>().newSchemaList[i])
                     {
                         isSchemaTrue = false;
+                        foreach (Transform child in panelSchema.transform)
+                        {
+                            GameObject.Destroy(child.gameObject);
+                        }
+                        currentSchemaList.Clear();
                         // Panel screen red pop 0.2s
-                        panelRed.SetActive(true);
-                        Invoke("SetInactivePanelRed", 0.2f);
+                        StartCoroutine(CoroutineSetPanelRed());
                     }
                 }
             }
@@ -88,8 +91,7 @@ public class BaseShape : MonoBehaviour
                 }
                 currentSchemaList.Clear();
                 // Panel screen green pop 0.2s
-                panelGreen.SetActive(true);
-                Invoke("SetInactivePanelGreen", 0.2f);
+                StartCoroutine(CoroutineSetPanelGreen());
             }
         }
     }
@@ -106,14 +108,20 @@ public class BaseShape : MonoBehaviour
     }
 
 
-    public void SetInactivePanelRed()
+    public IEnumerator CoroutineSetPanelRed()
     {
-        panelRed.SetActive(false);
+        Debug.Log("ici1?");
+        gameManager.redScreen.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        gameManager.redScreen.SetActive(false);
+        Debug.Log("ici2?");
     }
 
-    public void SetInactivePanelGreen()
+    public IEnumerator CoroutineSetPanelGreen()
     {
-        panelGreen.SetActive(false);
+        gameManager.greenScreen.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        gameManager.greenScreen.SetActive(false);
     }
 
 }
