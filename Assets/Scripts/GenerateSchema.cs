@@ -19,32 +19,40 @@ public class GenerateSchema : MonoBehaviour
     private int positionToFill;
 
     private SpawnManager spawnManager;
-
-    public List<string> newSchemaList { get; private set; }
+    private GameManager gameManager;
 
     void Start()
     {
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        canvasImgTransform = transform.Find("Canvas");
+        canvasImgTransform = transform.Find("Canvas"); 
         Debug.Log("transform canvas: " + canvasImgTransform.position);
 
         float canvasSize = canvasImgTransform.GetComponent<RectTransform>().rect.width;
         Debug.Log("size canvas: " + canvasSize);
 
-        newSchemaList = spawnManager.SpawnRandomSchemaInGame();
+        gameManager.newSchemaList = spawnManager.SpawnRandomSchemaInGame();
 
         // todo: depends of a param in SpawnManager.cs
         positionToFill = -1;
 
+        StartCoroutine(CoroutinePanelGrey());
+
         GenerateShapeInGame();
+    }
+
+    public IEnumerator CoroutinePanelGrey()
+    {
+        yield return new WaitForSeconds(8.0f);
+        gameManager.panelShapesUIGrey.SetActive(false);
     }
 
     void GenerateShapeInGame()
     {
-        for (int i = 0; i < newSchemaList.Count; i++)
+        for (int i = gameManager.newSchemaList.Count-1; i > -1; i--)
         {
-            switch (newSchemaList[i])
+            switch (gameManager.newSchemaList[i])
             {
                 case "Gr":
                     GameObject grShape = Instantiate(greenTexture, canvasImgTransform);

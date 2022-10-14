@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GreenShape : BaseShape
+public class PurpleShape : BaseShape
 {
-    public GameObject greenTexture;
+    public GameObject purpleTexture;
 
     public override void GenerateShape()
     {
-        GameObject grshape = Instantiate(greenTexture, base.canvasBuildedSchema);
-        string idGrShape = "Gr";
-        base.BuildShapeGenerated(grshape, idGrShape);
+        GameObject pushape = Instantiate(purpleTexture, base.canvasBuildedSchema);
+        string idPuShape = "Pu";
+        BuildShapeGenerated(pushape, idPuShape);
     }
 
     public override void DisplayOnScreen()

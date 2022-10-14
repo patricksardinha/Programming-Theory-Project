@@ -7,24 +7,16 @@ public class BlueShape : BaseShape
 {
     public GameObject blueTexture;
 
-    
     public override void GenerateShape()
     {
-        base.GenerateShape();
-        Debug.Log("blueShape.GenerateShape");
-        GameObject bshape = Instantiate(blueTexture, base.canvasBuildedSchema);
-        bshape.transform.localPosition += new Vector3(position3Shapes[base.schemaPositionToFill] * 50, 0, 0);
-        base.schemaPositionToFill++;
-        base.currentSchemaList.Add("Bl");
-        //Debug.Log("bshape: " + bshape.transform.position);
+        GameObject blshape = Instantiate(blueTexture, base.canvasBuildedSchema);
+        string idBlShape = "Bl";
+        BuildShapeGenerated(blshape, idBlShape);
     }
 
     public override void DisplayOnScreen()
     {
         base.DisplayOnScreen();
-        base.shapeText.SetText("Blue");
-        Debug.Log("blueShape.DisplayOnScreen");
         GenerateShape();
     }
-
 }

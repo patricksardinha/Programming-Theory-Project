@@ -122,7 +122,6 @@ MonoBehaviour:
   purpleTexture: {fileID: 5497242420224106671, guid: c4a6b824e02d2ac4eba9f24272ca6ff0, type: 3}
   cyanTexture: {fileID: 4932867375495240419, guid: 6e833796c22329c429e4e343e0b02211, type: 3}
   canvasImgTransform: {fileID: 0}
-  schemaList: []
 --- !u!1 &5479213954585347151
 GameObject:
   m_ObjectHideFlags: 0

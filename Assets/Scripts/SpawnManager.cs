@@ -13,6 +13,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float gapOffset;
     [SerializeField] private float offSetDecor;
 
+    public GameObject[] movableTiles;
+
     // Set the movable ground tile in the right or left side
     private List<Vector3> listParity = new List<Vector3>() { new Vector3(1,1,1), new Vector3(-1,1,1) };
 
@@ -97,9 +99,10 @@ public class SpawnManager : MonoBehaviour
 
     public GameObject SpawnRandomMovableGroundTile(Vector3 parity)
     {
-        GameObject pooledMovableGroundTile = ObjectPooler.SharedInstance.GetPooledMovableGroundTile();
-
-        pooledMovableGroundTile.SetActive(true);
+        //GameObject pooledMovableGroundTile = ObjectPooler.SharedInstance.GetPooledMovableGroundTile();
+        //pooledMovableGroundTile.SetActive(true);
+        
+        GameObject pooledMovableGroundTile = Instantiate(movableTiles[Random.Range(0, movableTiles.Length)]);
         pooledMovableGroundTile.transform.position = Vector3.Scale(posSpawnMovableGroundTile, parity);
 
         return pooledMovableGroundTile;

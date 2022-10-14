@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class MoveInCenter : MonoBehaviour
 {
-    private bool moveTile;
     private Vector3 distanceToCenter;
+    private GameManager gameManager;
 
     void Start()
     {
-        moveTile = false;
-        Invoke("MoveMovableGroundTile", 2.0f);
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        distanceToCenter = new Vector3 (30,0,0);
     }
 
     // Update is called once per frame
     void Update()
     {
         distanceToCenter = new Vector3(0, transform.position.y, transform.position.z) - transform.position;
-        if (moveTile && Mathf.Abs(distanceToCenter.x) > 0)
+        if (gameManager.moveTile && Mathf.Abs(distanceToCenter.x) > 0.1f)
         {
             transform.Translate(distanceToCenter * Time.deltaTime);
         }
-    }
-
-    void MoveMovableGroundTile()
-    {
-        moveTile = true;
+        else if (Mathf.Abs(distanceToCenter.x) < 0.1f)
+        {
+            Debug.Log("MOVE TILE? " + gameManager.moveTile);
+            gameManager.moveTile = false;
+        }
     }
 }

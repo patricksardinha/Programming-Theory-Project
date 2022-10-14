@@ -6,16 +6,14 @@ using TMPro;
 public class BaseShape : MonoBehaviour
 {
     private GameManager gameManager;
+    private MoveInCenter moveInCenter;
 
     protected TextMeshProUGUI shapeText;
     protected Transform canvasBuildedSchema;
 
     private GameObject panelSchema;
 
-    public int schemaPositionToFill;
-
     public static List<string> bf_shapeList = new List<string>() { "Gr", "Bl", "Ye", "Wh", "Re", "Pi", "Or", "Pu", "Cy" };
-    //public static List<string> bf_shapeList = new List<string>() { "Bl", "Bl", "Bl", "Bl", "Bl", "Bl", "Bl", "Bl", "Bl" };
 
     public List<string> shapeList
     {
@@ -24,8 +22,6 @@ public class BaseShape : MonoBehaviour
 
     private GameObject generateSchema;
 
-    public List<string> currentSchemaList = new List<string>();
-
     public List<float> position3Shapes { get; private set; }
     public List<float> position4Shapes { get; private set; }
     public List<float> position5Shapes { get; private set; }
@@ -33,9 +29,11 @@ public class BaseShape : MonoBehaviour
     public List<float> position7Shapes { get; private set; }
 
     
+    
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        moveInCenter = FindObjectOfType<MoveInCenter>().gameObject.GetComponent<MoveInCenter>();
 
         position3Shapes = new List<float>() { -1, 0, 1 };
         position4Shapes = new List<float>() { -1.5f, -0.5f, 0.5f, 1.5f };
@@ -43,40 +41,50 @@ public class BaseShape : MonoBehaviour
         position6Shapes = new List<float>() { -2.5f, -1.5f, 0.5f, 0.5f, 1.5f, 2.5f };
         position7Shapes = new List<float>() { -3, -2, -1, 0, 1, 2, 3 };
 
-        schemaPositionToFill = 0;
-
         panelSchema = GameObject.Find("PanelSchema");
-
         
         shapeText = GameObject.Find("ShapeText").GetComponent<TextMeshProUGUI>();
         canvasBuildedSchema = transform.parent.transform.Find("PanelSchema");
-        Debug.Log("la: "+ canvasBuildedSchema);
     }
 
     private void Update()
     {
-
         generateSchema = FindObjectOfType<GenerateSchema>().gameObject;
+        Debug.Log("POSITION TO FILL: " + gameManager.schemaPositionToFill);
 
-        if (schemaPositionToFill == 3)
+        string tmpPrint = "";
+        for (int i = 0; i < gameManager.currentSchemaList.Count; i++)
         {
-            schemaPositionToFill = 0;
+            tmpPrint += " " + gameManager.currentSchemaList[i];
+        }
+        Debug.Log("CURRENT SCHEMA LIST: "+ tmpPrint);
+
+        string tmpPrint2 = "";
+        for (int i = 0; i < gameManager.newSchemaList.Count; i++)
+        {
+            tmpPrint2 += " " + gameManager.newSchemaList[i];
+        }
+        Debug.Log("SCHEMA TO REPRODUCE: " + tmpPrint2);
+
+        if (gameManager.schemaPositionToFill == 3)
+        {
+            gameManager.schemaPositionToFill = 0;
 
             bool isSchemaTrue = false;
 
-            if (currentSchemaList.Count == generateSchema.GetComponent<GenerateSchema>().newSchemaList.Count)
+            if (gameManager.currentSchemaList.Count == gameManager.newSchemaList.Count)
             {
                 isSchemaTrue = true;
-                for (int i = 0; i < currentSchemaList.Count; i++)
+                for (int i = 0; i < gameManager.currentSchemaList.Count; i++)
                 {
-                    if (currentSchemaList[i] != generateSchema.GetComponent<GenerateSchema>().newSchemaList[i])
+                    if (gameManager.currentSchemaList[i] != gameManager.newSchemaList[i])
                     {
                         isSchemaTrue = false;
                         foreach (Transform child in panelSchema.transform)
                         {
                             GameObject.Destroy(child.gameObject);
                         }
-                        currentSchemaList.Clear();
+                        gameManager.currentSchemaList.Clear();
                         // Panel screen red pop 0.2s
                         StartCoroutine(CoroutineSetPanelRed());
                     }
@@ -89,16 +97,20 @@ public class BaseShape : MonoBehaviour
                 {
                     GameObject.Destroy(child.gameObject);
                 }
-                currentSchemaList.Clear();
+                gameManager.currentSchemaList.Clear();
+
+                gameManager.moveTile = true;
+
                 // Panel screen green pop 0.2s
                 StartCoroutine(CoroutineSetPanelGreen());
+
+                gameManager.panelShapesUIGrey.SetActive(true);
             }
         }
     }
 
     public virtual void DisplayOnScreen()
     {
-        shapeText.text = "";
         Debug.Log("baseShape.DisplayOnScreen");
     }
 
@@ -107,14 +119,19 @@ public class BaseShape : MonoBehaviour
         Debug.Log("baseShape.GenerateShape");
     }
 
+    public void BuildShapeGenerated(GameObject shape, string idShape)
+    {
+        shape.transform.localPosition += new Vector3(position3Shapes[gameManager.schemaPositionToFill] * 50, 0, 0);
+        gameManager.schemaPositionToFill++;
+        gameManager.currentSchemaList.Add(idShape);
+    }
+
 
     public IEnumerator CoroutineSetPanelRed()
     {
-        Debug.Log("ici1?");
         gameManager.redScreen.SetActive(true);
         yield return new WaitForSeconds(0.2f);
         gameManager.redScreen.SetActive(false);
-        Debug.Log("ici2?");
     }
 
     public IEnumerator CoroutineSetPanelGreen()

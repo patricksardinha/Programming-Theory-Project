@@ -12,9 +12,20 @@ public class GameManager : MonoBehaviour
     public GameObject redScreen;
     public GameObject greenScreen;
 
+    public GameObject panelShapesUIGrey;
+
+    public int schemaPositionToFill;
+    public List<string> currentSchemaList = new List<string>();
+    public List<string> newSchemaList = new List<string>();
+
+    public bool moveTile { get; set; }
+
     private void Start()
     {
         StartGame();
+
+        schemaPositionToFill = 0;
+        moveTile = false;
     }
 
     void Update()
