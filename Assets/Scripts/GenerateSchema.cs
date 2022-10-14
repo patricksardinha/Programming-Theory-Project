@@ -44,7 +44,7 @@ public class GenerateSchema : MonoBehaviour
 
     public IEnumerator CoroutinePanelGrey()
     {
-        yield return new WaitForSeconds(8.0f);
+        yield return new WaitForSeconds(4.5f);
         gameManager.panelShapesUIGrey.SetActive(false);
     }
 
