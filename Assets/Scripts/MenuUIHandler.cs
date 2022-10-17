@@ -14,20 +14,20 @@ public class MenuUIHandler : MonoBehaviour
 
     void Start()
     {
-        LoadNamePlayer();
+        //LoadNamePlayer();
     }
 
     public void StartGame()
     {
-        namePlayer = nameText.text;
-        SaveNamePlayer();
+        //namePlayer = nameText.text;
+        //SaveNamePlayer();
         SceneManager.LoadScene(1);
     }
 
     public void Exit()
     {
-        // Application.Quit(); // for exiting app in build mode
-        EditorApplication.ExitPlaymode(); // for exiting app in editor testing mode
+        Application.Quit(); // for exiting app in build mode
+        //EditorApplication.ExitPlaymode(); // for exiting app in editor testing mode
     }
 
     public void LoadNamePlayer()

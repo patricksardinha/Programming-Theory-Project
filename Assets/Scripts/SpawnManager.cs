@@ -143,8 +143,7 @@ public class SpawnManager : MonoBehaviour
         // Schema in game
         List<string> schemaList = new List<string>();
 
-        // todo: change hard coded 3 value
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < gameManager.difficultyScore; i++)
         {
             int rndShapeInd = Random.Range(0, BaseShape.bf_shapeList.Count);
             schemaList.Add(BaseShape.bf_shapeList[rndShapeInd]);

@@ -16,7 +16,7 @@ public class GenerateSchema : MonoBehaviour
 
     public Transform canvasImgTransform;
 
-    private int positionToFill;
+    private float positionToFill;
 
     private SpawnManager spawnManager;
     private GameManager gameManager;
@@ -35,7 +35,26 @@ public class GenerateSchema : MonoBehaviour
         gameManager.newSchemaList = spawnManager.SpawnRandomSchemaInGame();
 
         // todo: depends of a param in SpawnManager.cs
-        positionToFill = -1;
+        if (gameManager.difficultyScore == 3)
+        {
+            positionToFill = -1;
+        }
+        else if (gameManager.difficultyScore == 4)
+        {
+            positionToFill = -1.5f;
+        }
+        else if (gameManager.difficultyScore == 5)
+        {
+            positionToFill = -2;
+        }
+        else if (gameManager.difficultyScore == 6)
+        {
+            positionToFill = -2.5f;
+        }
+        else if (gameManager.difficultyScore == 7)
+        {
+            positionToFill = -3;
+        }
 
         StartCoroutine(CoroutinePanelGrey());
 

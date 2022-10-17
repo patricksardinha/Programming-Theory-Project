@@ -66,7 +66,7 @@ public class BaseShape : MonoBehaviour
         }
         Debug.Log("SCHEMA TO REPRODUCE: " + tmpPrint2);
 
-        if (gameManager.schemaPositionToFill == 3)
+        if (gameManager.schemaPositionToFill == gameManager.newSchemaList.Count && gameManager.schemaPositionToFill != 0)
         {
             gameManager.schemaPositionToFill = 0;
 
@@ -87,6 +87,7 @@ public class BaseShape : MonoBehaviour
                         gameManager.currentSchemaList.Clear();
                         // Panel screen red pop 0.2s
                         StartCoroutine(CoroutineSetPanelRed());
+                        gameManager.multiplierScore = 1;
                     }
                 }
             }
@@ -103,6 +104,9 @@ public class BaseShape : MonoBehaviour
 
                 // Panel screen green pop 0.2s
                 StartCoroutine(CoroutineSetPanelGreen());
+
+                gameManager.multiplierScore += 1;
+                
 
                 gameManager.panelShapesUIGrey.SetActive(true);
             }
@@ -121,7 +125,27 @@ public class BaseShape : MonoBehaviour
 
     public void BuildShapeGenerated(GameObject shape, string idShape)
     {
-        shape.transform.localPosition += new Vector3(position3Shapes[gameManager.schemaPositionToFill] * 50, 0, 0);
+        if (gameManager.difficultyScore == 3)
+        {
+            shape.transform.localPosition += new Vector3(position3Shapes[gameManager.schemaPositionToFill] * 50, 0, 0);
+        }
+        else if (gameManager.difficultyScore == 4)
+        {
+            shape.transform.localPosition += new Vector3(position4Shapes[gameManager.schemaPositionToFill] * 50, 0, 0);
+        }
+        else if (gameManager.difficultyScore == 5)
+        {
+            shape.transform.localPosition += new Vector3(position5Shapes[gameManager.schemaPositionToFill] * 50, 0, 0);
+        }
+        else if (gameManager.difficultyScore == 6)
+        {
+            shape.transform.localPosition += new Vector3(position6Shapes[gameManager.schemaPositionToFill] * 50, 0, 0);
+        }
+        else if (gameManager.difficultyScore == 7)
+        {
+            shape.transform.localPosition += new Vector3(position7Shapes[gameManager.schemaPositionToFill] * 50, 0, 0);
+        }
+
         gameManager.schemaPositionToFill++;
         gameManager.currentSchemaList.Add(idShape);
     }
