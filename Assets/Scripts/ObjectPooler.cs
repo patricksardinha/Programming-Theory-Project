@@ -7,12 +7,14 @@ public class ObjectPooler : MonoBehaviour
 {
     public static ObjectPooler SharedInstance;
 
+    // Define list of GameObject using the pool like the tiles and the decors
     public List<GameObject> pooledGroundTiles;
     public List<GameObject> pooledMovableGroundTiles;
     public List<GameObject> pooledDecorLeft;
     public List<GameObject> pooledDecorRight;
     public List<GameObject> pooledDecorDown;
 
+    // Define arrays containing the objects to pool
     public GameObject[] groundTileToPool;
     public GameObject[] movableGroundTileToPool;
     public GameObject[] decorLeftToPool;
@@ -24,6 +26,7 @@ public class ObjectPooler : MonoBehaviour
     void Awake()
     {
         SharedInstance = this;
+
         // Loop through list of pooled objects, deactivating them and adding them to the list 
         pooledGroundTiles = new List<GameObject>();
         for (int i = 0; i < amountToPool; i++)
@@ -31,7 +34,9 @@ public class ObjectPooler : MonoBehaviour
             GameObject obj = (GameObject)Instantiate(groundTileToPool[i % groundTileToPool.Length]);
             obj.SetActive(false);
             pooledGroundTiles.Add(obj);
-            obj.transform.SetParent(this.transform); // set as children of Spawn Manager
+
+            // Set as children of Spawn Manager
+            obj.transform.SetParent(this.transform); 
         }
 
         pooledMovableGroundTiles = new List<GameObject>();
@@ -43,6 +48,7 @@ public class ObjectPooler : MonoBehaviour
             obj.transform.SetParent(this.transform); 
         }
 
+        // Same process for the decors prefabs
         pooledDecorLeft = new List<GameObject>();
         pooledDecorRight = new List<GameObject>();
         pooledDecorDown = new List<GameObject>();
@@ -66,35 +72,37 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-    }
-
     public GameObject GetPooledGroundTile()
     {
+        // Choose a random Tile
         int randomTile = Random.Range(0, pooledGroundTiles.Count);
 
+        // And try to pool it if the object is not active 
         if (!pooledGroundTiles[randomTile].activeInHierarchy)
         {
             return pooledGroundTiles[randomTile];
         }
+        // In case the object is already used
         else
         {
             // For as many objects as are in the pooledObjects list
             for (int i = 0; i < pooledGroundTiles.Count; i++)
             {
-                // if the pooled objects is NOT active, return that object 
+                // If the pooled objects is NOT active, return that object 
+                // (Get the first one found)
                 if (!pooledGroundTiles[i].activeInHierarchy)
                 {
                     return pooledGroundTiles[i];
                 }
             }
-            // otherwise, return null   
+            // Otherwise, return null   
             return null;
         }
     }
 
 
+    // Same process for the movable tiles
+    // [NOT IN USAGE: SEE SpawnManager.cs]
     public GameObject GetPooledMovableGroundTile()
     {
         int randomMovableTile = Random.Range(0, pooledMovableGroundTiles.Count);
@@ -105,62 +113,51 @@ public class ObjectPooler : MonoBehaviour
         }
         else
         {
-            // For as many objects as are in the pooledObjects list
             for (int i = 0; i < pooledMovableGroundTiles.Count; i++)
             {
-                // if the pooled objects is NOT active, return that object 
                 if (!pooledMovableGroundTiles[i].activeInHierarchy)
                 {
                     return pooledMovableGroundTiles[i];
                 }
             }
-            // otherwise, return null   
             return null;
         }
     }
 
+    // Same process for the decors (left, right sides & down)
     public GameObject GetPooledDecorLeft()
     {
-        // For as many objects as are in the pooledObjects list
         for (int i = 0; i < pooledDecorLeft.Count; i++)
         {
-            // if the pooled objects is NOT active, return that object 
             if (!pooledDecorLeft[i].activeInHierarchy)
             {
                 return pooledDecorLeft[i];
             }
         }
-        // otherwise, return null   
         return null;
     }
 
     public GameObject GetPooledDecorRight()
     {
-        // For as many objects as are in the pooledObjects list
         for (int i = 0; i < pooledDecorRight.Count; i++)
         {
-            // if the pooled objects is NOT active, return that object 
             if (!pooledDecorRight[i].activeInHierarchy)
             {
                 return pooledDecorRight[i];
             }
         }
-        // otherwise, return null   
         return null;
     }
 
     public GameObject GetPooledDecorDown()
     {
-        // For as many objects as are in the pooledObjects list
         for (int i = 0; i < pooledDecorDown.Count; i++)
         {
-            // if the pooled objects is NOT active, return that object 
             if (!pooledDecorDown[i].activeInHierarchy)
             {
                 return pooledDecorDown[i];
             }
         }
-        // otherwise, return null   
         return null;
     }
 }

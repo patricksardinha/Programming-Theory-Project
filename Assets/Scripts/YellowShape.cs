@@ -7,6 +7,7 @@ public class YellowShape : BaseShape
 {
     public GameObject yellowTexture;
 
+    // When the shape is clicked, instantiate a new picture of the shape in the build schema panel
     public override void GenerateShape()
     {
         GameObject yeshape = Instantiate(yellowTexture, base.canvasBuildedSchema);

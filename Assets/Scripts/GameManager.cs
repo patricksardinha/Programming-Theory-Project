@@ -11,46 +11,58 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public float environmentSpeed;
-
     public bool isGameActive;
 
+    // Audio
     private AudioSource gameAudioClip;
 
+    // Screens
     public GameObject redScreen;
     public GameObject greenScreen;
 
+    // UI
     public GameObject panelShapesUIGrey;
-
     public GameObject panelGameOver;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI multiplierText;
     public TextMeshProUGUI difficultyText;
-
     public TextMeshProUGUI yourScoreText;
 
+    // Score management
     private float currentScore;
     public int multiplierScore;
     public int difficultyScore;
 
+    // Schemas beheviour
     public int schemaPositionToFill;
     public List<string> currentSchemaList = new List<string>();
     public List<string> newSchemaList = new List<string>();
 
+    // Flag difficulty to increase difficulty multiplier
     public bool flagDiff3;
     public bool flagDiff4;
     public bool flagDiff5;
     public bool flagDiff6;
+
+    // ENCAPSULATION
+    // Tile movement management
     public bool moveTile { get; set; }
 
     private void Start()
     {
         StartGame();
+
+        // Set up session variables
         currentScore = 0;
         multiplierScore = 1;
         difficultyScore = 3;
+
+        // Set up the display
         scoreText.text = "Score: " + currentScore;
         multiplierText.text = "Multiplier: x" + multiplierScore;
         difficultyText.text = "Difficulty: x" + difficultyScore;
+
+        // Set up flags for the difficulty
         flagDiff3 = true;
         flagDiff4 = true;
         flagDiff5 = true;
@@ -59,11 +71,14 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        // Constently increase & display the score
         currentScore += 1 * Time.deltaTime * multiplierScore * difficultyScore;
         scoreText.SetText("Score: " + Mathf.Ceil(currentScore));
         multiplierText.SetText("Multiplier: x" + multiplierScore);
         difficultyText.SetText("Difficulty: x" + difficultyScore);
 
+        // Adapt the game difficulty if a treshold score is reach
+        // Set up the related flag if so
         if (currentScore > 100 && flagDiff3)
         {
             flagDiff3 = false;
@@ -86,6 +101,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Variables initialization related to the game when the game start
     public void StartGame()
     {
         isGameActive = true;
@@ -94,17 +110,21 @@ public class GameManager : MonoBehaviour
         moveTile = false;
     }
 
+    // Case of game over
     public void GameOver()
     {
         isGameActive = false;
         Time.timeScale = 0;
 
+        // Clear all list
         newSchemaList.Clear();
         currentSchemaList.Clear();
         schemaPositionToFill = 0;
 
+        // Display game over
         panelGameOver.SetActive(true);
         
+        // Get & display the player score
         yourScoreText.SetText("Your Score: " + Mathf.Ceil(currentScore));
     }
 

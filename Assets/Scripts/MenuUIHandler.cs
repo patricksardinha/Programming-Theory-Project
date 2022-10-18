@@ -30,6 +30,7 @@ public class MenuUIHandler : MonoBehaviour
         //EditorApplication.ExitPlaymode(); // for exiting app in editor testing mode
     }
 
+    // [NOT IN USAGE]
     public void LoadNamePlayer()
     {
         nameText.text = MenuManager.Instance.LoadNamePlayer();

@@ -13,11 +13,12 @@ public class DetectCollisions : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // Check if the censor end game collides with the player
         if (other.gameObject.CompareTag("Player"))
         {
             Destroy(other.gameObject);
 
-            // Set the game as Over
+            // If yes, set the game as Over
             gameManager.GameOver();
         }
     }

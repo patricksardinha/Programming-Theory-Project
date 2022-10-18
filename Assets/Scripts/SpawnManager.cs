@@ -24,10 +24,9 @@ public class SpawnManager : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        // Start spawn for the running path
         StartCoroutine("RoutineSpawnRunningPath");
     }
-
-    // Update is called once per frame
     void Update()
     {
         
@@ -57,6 +56,7 @@ public class SpawnManager : MonoBehaviour
         float sizeGroundTile = groundTile.GetComponent<BoxCollider>().size.z * groundTile.transform.localScale.z;
         float sizeDecor = decorDown.GetComponent<BoxCollider>().size.z;
 
+        // Looping until the game is over
         while (gameManager.isGameActive)
         {
             yield return new WaitForSeconds(0);
@@ -64,19 +64,19 @@ public class SpawnManager : MonoBehaviour
             positionGroundTile = groundTile.transform.position;
             sizeGroundTile = groundTile.GetComponent<BoxCollider>().size.z * groundTile.transform.localScale.z;
 
-            // Idem for decors
+            // Same process for decors
             positionDecor = decorDown.transform.position;
             sizeDecor = decorDown.GetComponent<BoxCollider>().size.z;
 
             // Check if new ground tile should be spawn
-            // If true call SpawnRandomGroundTile()
+            // If true call the spawn function
             if (positionGroundTile.z < posSpawnGroundTile.z - (sizeGroundTile + gapOffset))
             {
                 groundTile = SpawnRandomGroundTile();
                 movableGroundTile = SpawnRandomMovableGroundTile(listParity[Random.Range(0, listParity.Count)]);
             }
 
-            // Idem for decors
+            // Same for decors
             if (positionDecor.z < posSpawnDecors.z - (sizeDecor - offSetDecor))
             {
                 decorLeft = SpawnDecor("Left", listParity[1]);
@@ -97,6 +97,7 @@ public class SpawnManager : MonoBehaviour
         return pooledGroundTile;
     }
 
+    // For the movable tiles, instantiate the objects in order to destroy them fast after they bypass the player
     public GameObject SpawnRandomMovableGroundTile(Vector3 parity)
     {
         //GameObject pooledMovableGroundTile = ObjectPooler.SharedInstance.GetPooledMovableGroundTile();
@@ -110,27 +111,28 @@ public class SpawnManager : MonoBehaviour
 
     public GameObject SpawnDecor(string decorSide, Vector3 parity)
     {
+        // Switch case according the side where the decor should spawn
         switch (decorSide)
         {
+            // First: pool the object
+            // Second: set the object as active
+            // Third: position the object (parity defines the side (left, right, down))
             case "Left":
-                Debug.Log("?");
                 GameObject pooledDecorLeft = ObjectPooler.SharedInstance.GetPooledDecorLeft();
                 pooledDecorLeft.SetActive(true);
                 pooledDecorLeft.transform.position = Vector3.Scale(posSpawnDecors, parity);
-
                 return pooledDecorLeft;
 
             case "Right":
                 GameObject pooledDecorRight = ObjectPooler.SharedInstance.GetPooledDecorRight();
                 pooledDecorRight.SetActive(true);
                 pooledDecorRight.transform.position = Vector3.Scale(posSpawnDecors, parity);
-
                 return pooledDecorRight;
+
             case "Down":
                 GameObject pooledDecorDown = ObjectPooler.SharedInstance.GetPooledDecorDown();
                 pooledDecorDown.SetActive(true);
                 pooledDecorDown.transform.position = Vector3.Scale(posSpawnDecors, parity);
-
                 return pooledDecorDown;
 
             default: return null;
@@ -140,14 +142,14 @@ public class SpawnManager : MonoBehaviour
 
     public List<string> SpawnRandomSchemaInGame()
     {
-        // Schema in game
+        // Define the schema generated in game
         List<string> schemaList = new List<string>();
 
+        // For each element, select a random shapes and add it into the list
         for (int i = 0; i < gameManager.difficultyScore; i++)
         {
             int rndShapeInd = Random.Range(0, BaseShape.bf_shapeList.Count);
             schemaList.Add(BaseShape.bf_shapeList[rndShapeInd]);
-            Debug.Log("->" + schemaList[i]);
         }
 
         return schemaList;

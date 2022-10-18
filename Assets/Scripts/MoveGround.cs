@@ -11,11 +11,10 @@ public class MoveGround : MonoBehaviour
 
     void Start()
     {
-        // Ref to gameManager script
+        // Reference to gameManager script
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Set the ground speed as the environment speed

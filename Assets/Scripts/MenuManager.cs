@@ -26,6 +26,7 @@ public class MenuManager : MonoBehaviour
         public string namePlayer;
     }
 
+    // Save the player name is a json file
     public void SaveNamePlayer()
     {
         SaveData data = new SaveData();
@@ -37,6 +38,7 @@ public class MenuManager : MonoBehaviour
     }
 
 
+    // Load the name
     public string LoadNamePlayer()
     {
         string path = Application.persistentDataPath + "/savefile.json";

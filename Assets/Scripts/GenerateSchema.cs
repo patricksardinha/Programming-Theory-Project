@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GenerateSchema : MonoBehaviour
 {
+    // Get texture images for the shapes
     public GameObject greenTexture;
     public GameObject blueTexture;
     public GameObject yellowTexture;
@@ -26,15 +27,16 @@ public class GenerateSchema : MonoBehaviour
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        // Find the canvas in the map to generate the schema
         canvasImgTransform = transform.Find("Canvas"); 
-        Debug.Log("transform canvas: " + canvasImgTransform.position);
 
+        // Get its size
         float canvasSize = canvasImgTransform.GetComponent<RectTransform>().rect.width;
-        Debug.Log("size canvas: " + canvasSize);
 
+        // Spawn the new schema
         gameManager.newSchemaList = spawnManager.SpawnRandomSchemaInGame();
 
-        // todo: depends of a param in SpawnManager.cs
+        // Depending the difficulty set up the position to fill
         if (gameManager.difficultyScore == 3)
         {
             positionToFill = -1;
@@ -56,11 +58,14 @@ public class GenerateSchema : MonoBehaviour
             positionToFill = -3;
         }
 
+        // Disable the shape buttons for a short moment
         StartCoroutine(CoroutinePanelGrey());
 
+        // Then generate shapes
         GenerateShapeInGame();
     }
 
+    // Coroutine disable buttons
     public IEnumerator CoroutinePanelGrey()
     {
         yield return new WaitForSeconds(4.5f);
@@ -69,8 +74,10 @@ public class GenerateSchema : MonoBehaviour
 
     void GenerateShapeInGame()
     {
+        // Display each shapes in the schema on the panel in game
         for (int i = gameManager.newSchemaList.Count-1; i > -1; i--)
         {
+            // Switch case according to the shape ids
             switch (gameManager.newSchemaList[i])
             {
                 case "Gr":
